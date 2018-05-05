@@ -4,7 +4,6 @@ import { MethodDeclaration } from '../declarations/MethodDeclaration';
 import { ParameterDeclaration } from '../declarations/ParameterDeclaration';
 import { PropertyDeclaration } from '../declarations/PropertyDeclaration';
 import { VariableDeclaration } from '../declarations/VariableDeclaration';
-import { NotGeneratableYetError } from '../errors/NotGeneratableYetError';
 import { Export } from '../exports/Export';
 import { ExternalModuleImport } from '../imports/ExternalModuleImport';
 import { Import } from '../imports/Import';
@@ -13,6 +12,7 @@ import { NamespaceImport } from '../imports/NamespaceImport';
 import { StringImport } from '../imports/StringImport';
 import { SymbolSpecifier } from '../SymbolSpecifier';
 import { generateAccessorDeclaration } from './typescript-generators/accessorDeclaration';
+import { generateCommon } from './typescript-generators/common';
 import { generateExternalModuleImport } from './typescript-generators/externalModuleImport';
 import { generateMethodDeclaration } from './typescript-generators/methodDeclaration';
 import { generateNamedImport } from './typescript-generators/namedImport';
@@ -69,10 +69,14 @@ export class TypescriptCodeGenerator {
      * @throws {NotGeneratableYetError}
      * @memberof TypescriptCodeGenerator
      */
-    public generate(declaration: Generatable): string {
+    public generate(declaration: Generatable, sourceFileCode?: string): string {
         if (GENERATORS[declaration.constructor.name]) {
             return GENERATORS[declaration.constructor.name](declaration, this.options);
         }
-        throw new NotGeneratableYetError(declaration);
+        
+        console.warn('this is experimental generator');
+        return generateCommon(declaration, sourceFileCode);
+
+        // throw new NotGeneratableYetError(declaration);
     }
 }

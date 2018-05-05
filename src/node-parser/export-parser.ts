@@ -62,7 +62,7 @@ export function parseExport(resource: Resource, node: ExportDeclaration | Export
             if (resource.usages.indexOf(name) === -1) {
                 resource.usages.push(name);
             }
-            resource.declarations.push(new DefaultDeclaration(name, resource));
+            resource.declarations.push(new DefaultDeclaration(name, resource, (<any>resource).start, (<any>resource).end));
         }
     }
 }
